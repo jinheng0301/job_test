@@ -10,7 +10,7 @@ import 'package:recipeee/features/auth/screens/login_screen.dart';
 import 'package:recipeee/firebase_options.dart';
 import 'package:recipeee/models/user_model.dart';
 import 'package:recipeee/router.dart';
-import 'package:recipeee/screen/mobile_layout_screen.dart';
+import 'package:recipeee/features/recipe/screens/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,10 +26,11 @@ class MyApp extends ConsumerWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Recipeee',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Colors.white,
-        appBarTheme: AppBarTheme(color: appBarColor),
+      theme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: backgroundColor,
+        appBarTheme: const AppBarTheme(
+          color: appBarColor,
+        ),
       ),
       onGenerateRoute: (settings) => onGenerateRoute(settings),
       home: ref
@@ -59,7 +60,7 @@ class MyApp extends ConsumerWidget {
                         '🔑 CurrentUser username = ${FirebaseAuth.instance.currentUser?.displayName}',
                       );
 
-                      return MobileLayoutScreen();
+                      return HomeScreen();
                     },
                   );
             },

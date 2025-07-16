@@ -1,0 +1,9 @@
+{
+    "types": [
+        "Western",
+        "Asian",
+        "Dessert",
+        "Vegan",
+        "Snack"
+    ]
+}
