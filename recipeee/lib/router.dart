@@ -4,6 +4,7 @@ import 'package:recipeee/features/auth/screens/login_screen.dart';
 import 'package:recipeee/features/auth/screens/sign_up_screen.dart';
 import 'package:recipeee/features/recipe/screens/add_recipe_screen.dart';
 import 'package:recipeee/features/recipe/screens/recipe_detail_screen.dart';
+import 'package:recipeee/models/recipe.dart';
 
 Route<dynamic> onGenerateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -17,7 +18,10 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
 
     // RECIPE-DETAIL-SCREEN
     case RecipeDetailScreen.routeName:
-      return MaterialPageRoute(builder: (_) => RecipeDetailScreen());
+    final recipe = settings.arguments as Recipe;
+      return MaterialPageRoute(
+        builder: (_) => RecipeDetailScreen(recipe: recipe),
+      );
 
     // ADD-RECIPE-SCREEN
     case AddRecipeScreen.routeName:
