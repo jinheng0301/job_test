@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipeee/common/utils/loader.dart';
+import 'package:recipeee/common/utils/utils.dart';
 import 'package:recipeee/common/widgets/error.dart';
 import 'package:recipeee/features/auth/controller/auth_controller.dart';
 import 'package:recipeee/features/recipe/controller/recipe_controller.dart';
@@ -118,6 +119,38 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     }
   }
 
+  Future<void> _showLogOutDialog() async {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Are you sure want to log out?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                try {
+                  // Call the sign-out method from the AuthController
+                  await ref
+                      .read(authControllerProvider)
+                      .signOut(context: context);
+                } catch (e) {
+                  showSnackBar(context, 'Failed to sign out: $e');
+                }
+              },
+              child: Text('Conlan7firm!'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -129,7 +162,38 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               return AppBar(title: const Text('Recipeee'));
             },
             data: (user) {
-              return AppBar(title: Text('${user?.username}\'s recipe '));
+              return AppBar(
+                title: Row(
+                  children: [
+                    user?.profilePic != null && user!.profilePic.isNotEmpty
+                        ? CircleAvatar(
+                          radius: 18,
+                          backgroundImage: NetworkImage(user.profilePic),
+                        )
+                        : CircleAvatar(
+                          radius: 18,
+                          backgroundImage: NetworkImage(
+                            'https://www.shutterstock.com/image-vector/donald-trump-president-united-states-260nw-2283642167.jpg',
+                          ),
+                        ),
+                    SizedBox(width: 10),
+                    Text('${user?.username}\'s recipe '),
+                  ],
+                ),
+                actions: [
+                  PopupMenuButton(
+                    onSelected: (value) {
+                      _showLogOutDialog();
+                    },
+                    icon: Icon(Icons.more_vert, color: Colors.greenAccent),
+                    itemBuilder: (BuildContext context) {
+                      return [
+                        PopupMenuItem(value: 'logout', child: Text('Log out')),
+                      ];
+                    },
+                  ),
+                ],
+              );
             },
           ),
 
@@ -218,6 +282,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 itemCount: filteredRecipes.length,
                                 itemBuilder: (_, index) {
                                   final recipe = filteredRecipes[index];
+
                                   return Card(
                                     margin: const EdgeInsets.symmetric(
                                       horizontal: 16,
@@ -238,10 +303,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                           Text(
                                             recipe.type,
                                             style: TextStyle(
-                                              color:
-                                                  Theme.of(
-                                                    context,
-                                                  ).primaryColor,
                                               fontWeight: FontWeight.w500,
                                             ),
                                           ),

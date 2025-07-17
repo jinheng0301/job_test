@@ -27,17 +27,20 @@ class AuthRepository {
   Stream<User?> get authStateChanges => auth.authStateChanges();
 
   Future<UserModel?> getCurrentUserData() async {
-    if (auth.currentUser == null) return null;
+    try {
+      if (auth.currentUser == null) return null;
 
-    var userData =
-        await firestore.collection('users').doc(auth.currentUser?.uid).get();
+      var userData =
+          await firestore.collection('users').doc(auth.currentUser?.uid).get();
 
-    UserModel? user;
-    if (userData.data() != null) {
-      user = UserModel.fromMap(userData.data()!);
+      if (userData.exists && userData.data() != null) {
+        return UserModel.fromMap(userData.data()!);
+      }
+      return null;
+    } catch (e) {
+      debugPrint('Error fetching current user data: $e');
+      return null;
     }
-
-    return user;
   }
 
   Future<void> signUpWithEmail({
@@ -64,19 +67,19 @@ class AuthRepository {
             .storeFileToFirebase('profilePic/$uid', profilePic);
       }
 
-      // Create data map first
-      Map<String, dynamic> userData = {
-        'name': name,
-        'email': email,
-        'uid': uid,
-        'profilePic': photoUrl,
-      };
+      // Create user model
+      UserModel userModel = UserModel(
+        id: uid,
+        username: name,
+        email: email,
+        profilePic: photoUrl,
+      );
 
       // Save to Firebase using set with merge option
       await firestore
           .collection('users')
           .doc(uid)
-          .set(userData, SetOptions(merge: true));
+          .set(userModel.toMap(), SetOptions(merge: true));
 
       Navigator.pushAndRemoveUntil(
         context,
@@ -154,11 +157,18 @@ class AuthRepository {
   }
 
   Stream<UserModel> userData(String userId) {
-    return firestore
-        .collection('users')
-        .doc(userId)
-        .snapshots()
-        .map((event) => UserModel.fromMap(event.data()!));
+    return firestore.collection('users').doc(userId).snapshots().map((event) {
+      if (event.exists && event.data() != null) {
+        return UserModel.fromMap(event.data()!);
+      }
+      // Return a default user model if data doesn't exist
+      return UserModel(
+        id: userId,
+        username: 'Unknown',
+        email: '',
+        profilePic: '',
+      );
+    });
   }
 
   void setUserState(bool isOnline) async {

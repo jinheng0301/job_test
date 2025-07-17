@@ -267,17 +267,14 @@ class _RecipeDetailScreenState extends ConsumerState<RecipeDetailScreen> {
 
         // Recipe Type Badge
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          padding: const EdgeInsets.symmetric(vertical: 6),
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor.withOpacity(0.1),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Text(
-            widget.recipe.type,
-            style: TextStyle(
-              color: Theme.of(context).primaryColor,
-              fontWeight: FontWeight.bold,
-            ),
+            'Types: ${widget.recipe.type}',
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         const SizedBox(height: 16),

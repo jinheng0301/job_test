@@ -13,10 +13,10 @@ class UserModel {
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      id: json['id'] as String,
-      username: json['name'] as String,
-      email: json['email'] as String,
-      profilePic: json['profilePic'] as String,
+      id: json['uid'] ?? json['id'] ?? '',
+      username: json['name'] ?? '',
+      email: json['email'] ?? '',
+      profilePic: json['profilePic'] ?? '',
     );
   }
 
@@ -31,10 +31,19 @@ class UserModel {
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      id: map['id'] ?? '',
+      id: map['uid'] ?? map['id'] ?? '',
       username: map['name'] ?? '',
       email: map['email'] ?? '',
-      profilePic: map['profilePictureUrl'] ?? '',
+      profilePic: map['profilePic'] ?? '',
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'uid': id,
+      'name': username,
+      'email': email,
+      'profilePic': profilePic,
+    };
   }
 }

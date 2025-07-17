@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:recipeee/common/utils/color.dart';
 import 'package:recipeee/common/utils/utils.dart';
 import 'package:recipeee/features/recipe/controller/recipe_controller.dart';
 import 'package:recipeee/models/recipe.dart';
@@ -72,7 +73,7 @@ class _AddRecipeScreenState extends ConsumerState<AddRecipeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add Recipe'),
-        backgroundColor: Colors.green,
+        backgroundColor: appBarColor,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -88,10 +89,9 @@ class _AddRecipeScreenState extends ConsumerState<AddRecipeScreen> {
                       width: double.infinity,
                       fit: BoxFit.cover,
                     )
-                    : Container(
+                    : SizedBox(
                       height: 180,
                       width: double.infinity,
-                      color: Colors.grey.shade300,
                       child: const Center(child: Text('No Image Selected')),
                     ),
                 const SizedBox(height: 10),
@@ -172,7 +172,14 @@ class _AddRecipeScreenState extends ConsumerState<AddRecipeScreen> {
                     minimumSize: const Size(double.infinity, 50),
                     backgroundColor: Colors.blue,
                   ),
-                  child: const Text('Save Recipe'),
+                  child: const Text(
+                    'Save Recipe',
+                    style: TextStyle(
+                      color: Colors.amber,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ],
             ),
