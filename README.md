@@ -4,8 +4,7 @@ Home screen:
 
 Add recipe screen: 
 
-<img width="390" height="895" alt="image" src="https://github.com/user-attachments/assets/8795ffe4-1813-470e-8f28-359841046704" />
-
+<img width="390" height="895" alt="image" src="https://github.com/user-attachments/assets/bc45c41d-deaf-451c-a2eb-e73d3b5edf4a" />
 
 Recipe detail screen: 
 
