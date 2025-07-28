@@ -33,6 +33,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     loadData();
   }
 
+  // Load initial data
+  // This method fetches recipe types and recipes, and preloads images for visible recipes.
   void loadData() async {
     final controller = ref.read(recipeControllerProvider);
     final typesJson = await DefaultAssetBundle.of(
@@ -53,6 +55,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     _preloadImages();
   }
 
+  // Preload images for all recipes in the current view
+  // This method fetches images for recipes that are currently visible in the list.
   void _preloadImages() async {
     final controller = ref.read(recipeControllerProvider);
 
@@ -78,6 +82,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     }
   }
 
+  // Filter recipes by type
+  // This method updates the filteredRecipes list based on the selected recipe type.
   void filterRecipes(String? type) {
     setState(() {
       selectedType = type;
@@ -92,6 +98,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     _preloadImages();
   }
 
+  // Build the recipe image widget
+  // This method returns a CircleAvatar with the recipe image, either from network or blob storage
   Widget _buildRecipeImage(Recipe recipe) {
     if (recipe.imageUrl.startsWith('http')) {
       // Network image
@@ -143,7 +151,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   showSnackBar(context, 'Failed to sign out: $e');
                 }
               },
-              child: Text('Conlan7firm!'),
+              child: Text('Confirm!'),
             ),
           ],
         );

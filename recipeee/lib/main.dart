@@ -28,9 +28,7 @@ class MyApp extends ConsumerWidget {
       title: 'Recipeee',
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: backgroundColor,
-        appBarTheme: const AppBarTheme(
-          color: appBarColor,
-        ),
+        appBarTheme: const AppBarTheme(color: appBarColor),
       ),
       onGenerateRoute: (settings) => onGenerateRoute(settings),
       home: ref
